@@ -1,0 +1,2 @@
+To complete your registration, please visit:
+{{ url_for('console.complete_registration', token=token, _external=True) }}

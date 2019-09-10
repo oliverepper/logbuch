@@ -1,0 +1,6 @@
+flask
+flask-jwt
+flask-mail
+flask-migrate
+flask-sqlalchemy
+python-dotenv
