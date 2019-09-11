@@ -54,6 +54,9 @@ def create_app(config=Config):
     from app.console import bp as console_bp
     app.register_blueprint(console_bp)
 
+    from app.message_service import bp as message_service_bp
+    app.register_blueprint(message_service_bp)
+
     if not app.debug:
         # log errors per email
         if app.config["MAIL_SERVER"]:

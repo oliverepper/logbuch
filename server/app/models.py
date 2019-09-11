@@ -13,6 +13,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    cellphone = db.Column(db.String(32), index=True)
     password_hash = db.Column(db.String(256))
     allow_password_reset = db.Column(db.Boolean, default=False)
 

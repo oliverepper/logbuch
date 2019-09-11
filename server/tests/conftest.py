@@ -15,7 +15,7 @@ def client():
 
     with app.app_context():
         db.create_all()
-        user = User(email="oliver.epper@gmail.com")
+        user = User(email="oliver.epper@gmail.com", cellphone="+4915123595397")
         user.set_password("test")
         db.session.add(user)
         db.session.commit()
