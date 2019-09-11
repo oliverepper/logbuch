@@ -1,6 +1,9 @@
 flask
+flask-babel
 flask-jwt
+flask-login
 flask-mail
 flask-migrate
 flask-sqlalchemy
+flask-wtf
 python-dotenv

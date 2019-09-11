@@ -11,3 +11,13 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
     SENDER_EMAIL = ["logbuch@oliver-epper.de"]
     ADMINS = ["oliver.epper@gmail.com"]
+
+    LANGUAGES = ["en", "de", "de_DE"]
+
+
+class TestConfig(Config):
+    MAIL_SERVER = os.environ.get("MAIL_SERVER") or "localhost"
+    MAIL_PORT = int(os.environ.get("MAIL_PORT") or 8025)
+    SQLALCHEMY_DATABASE_URI = "sqlite:///"
+    WTF_CSRF_ENABLED = False
+    TESTING = True

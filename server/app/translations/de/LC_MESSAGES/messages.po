@@ -1,0 +1,113 @@
+# German translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-09-10 16:50+0200\n"
+"PO-Revision-Date: 2019-09-10 15:01+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: app/console/forms.py:36 app/console/forms.py:57 app/console/forms.py:64
+#: app/console/forms.py:74
+msgid "Email"
+msgstr "E-Mail"
+
+#: app/console/forms.py:58 app/console/forms.py:80
+msgid "Password"
+msgstr "Passwort"
+
+#: app/console/forms.py:59
+msgid "remember me"
+msgstr "An mich erinnern"
+
+#: app/console/forms.py:60
+msgid "Sign In"
+msgstr "Anmelden"
+
+#: app/console/forms.py:65
+msgid "Send Registration Token"
+msgstr "Registrierungs-Token verschicken"
+
+#: app/console/forms.py:70
+msgid "Please use a different email adress."
+msgstr "Bitte benutze eine andere E-Mail Adresse"
+
+#: app/console/forms.py:75
+msgid "Request Password Reset"
+msgstr "Passwort Änderung anfordern"
+
+#: app/console/forms.py:82
+msgid "Repeat Password"
+msgstr "Passwort wiederholen"
+
+#: app/console/forms.py:84
+msgid "Set Password"
+msgstr "Password setzen"
+
+#: app/console/forms.py:88
+msgid "Old Password"
+msgstr "Altes Passwort"
+
+#: app/console/forms.py:92
+msgid "Old password is invalid."
+msgstr "Das alte Passwort ist ungültig."
+
+#: app/console/routes.py:21
+msgid "You're already logged in. No need to register."
+msgstr "Du bist schon angemeldet und musst Dich nicht mehr registrieren"
+
+#: app/console/routes.py:26
+msgid "Please check your email for instructions to create your account."
+msgstr "Bitte sieh in Deinen E-Mails nach um deinen Zugang zu erstellen."
+
+#: app/console/routes.py:28
+msgid "Register"
+msgstr "Registrieren"
+
+#: app/console/routes.py:34
+msgid "You're already logged in."
+msgstr "Du bist bereits angemeldet."
+
+#: app/console/routes.py:38
+msgid "Your registration token is invalid."
+msgstr "Dein Token ist nicht gültig."
+
+#: app/console/routes.py:45
+#, python-format
+msgid "User: %(user)s already exists."
+msgstr "Benutzer: %(user)s existiert bereits."
+
+#: app/console/routes.py:52
+msgid "Congratulations! Your registration is complete."
+msgstr "Glückwunsch. Dein Zugang ist jetzt eingerichtet."
+
+#: app/console/routes.py:56
+msgid "Complete Registration"
+msgstr "Registrierung abschließen."
+
+#: app/templates/base.html:11
+msgid "Welcome to Logbuch"
+msgstr "Willkommen zu Logbuch"
+
+#: app/templates/console/email/registration.html:2
+#: app/templates/console/email/registration.txt:1
+msgid "To complete your registration, please visit:"
+msgstr "Um Deine Registrierung abzuschließen klicke bitte auf den folgenden Link:"
+
+#~ msgid "Old password is invalid."
+#~ msgstr "Das alte Passwort ist ungültig"
+
+#~ msgid "Old password was invalid."
+#~ msgstr "Das alte Passwort ist ungültig"
+

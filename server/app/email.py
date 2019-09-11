@@ -13,13 +13,7 @@ def send_async_email(app, msg):
 
 
 def send_email(
-    subject,
-    sender,
-    recipients,
-    text_body,
-    html_body,
-    attachments=False,
-    sync=False,
+    subject, sender, recipients, text_body, html_body, attachments=False, sync=False
 ):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
@@ -31,6 +25,5 @@ def send_email(
         mail.send(msg)
     else:
         Thread(
-            target=send_async_email,
-            args=(current_app._get_current_object(), msg),
+            target=send_async_email, args=(current_app._get_current_object(), msg)
         ).start()
