@@ -16,6 +16,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256))
     allow_password_reset = db.Column(db.Boolean, default=False)
 
+    logs = db.relationship("Log", back_populates="owner")
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -46,8 +48,10 @@ class User(UserMixin, db.Model):
 class Log(db.Model):
     __tablename__ = "logs"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), nullable=False)
-    # Todo: name, owner, tags
+    title = db.Column(db.String(256), nullable=False)
+
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    owner = db.relationship("User", back_populates="logs")
 
 
 class Entry(db.Model):
