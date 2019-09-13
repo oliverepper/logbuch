@@ -7,5 +7,6 @@
 {{ user.api_token.value }}
 </pre>
 <p>{{ _("Please check for a new API Token after:") }}</p>
-{{ user.api_token.expiration_date }}
+{% set exp_date = user.api_token.expiration_date %}
+{{ moment(exp_date).format('LLLL') }} ({{ moment(exp_date).fromNow() }})
 {% endblock content %}

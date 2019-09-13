@@ -10,6 +10,7 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
+from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
@@ -22,6 +23,7 @@ login = LoginManager()
 login.login_view = "console.login"
 login.login_message = "Please login to access this page."
 babel = Babel()
+moment = Moment()
 
 
 class ApiResult(object):
@@ -80,6 +82,7 @@ def create_app(config=Config):
     mail.init_app(app)
     login.init_app(app)
     babel.init_app(app)
+    moment.init_app(app)
 
     # register blueprints
     from app.errors import bp as errors_bp

@@ -1,22 +1,21 @@
-from flask import flash, redirect, render_template, url_for
-from flask_babel import _
+from flask import flash, g, redirect, render_template, url_for
+from flask_babel import _, get_locale
 from flask_login import current_user, login_required, login_user, logout_user
 
 from app import db
 from app.console import bp
-from app.console.forms import (
-    ChangePasswordForm,
-    LoginForm,
-    RequestPasswordResetForm,
-    RequestRegistrationForm,
-    SetPasswordForm,
-)
-from app.console.registration import (
-    send_password_reset_email,
-    send_registration_email,
-    verify_registration_token,
-)
+from app.console.forms import (ChangePasswordForm, LoginForm,
+                               RequestPasswordResetForm,
+                               RequestRegistrationForm, SetPasswordForm)
+from app.console.registration import (send_password_reset_email,
+                                      send_registration_email,
+                                      verify_registration_token)
 from app.models import User
+
+
+@bp.before_app_request
+def before_request():
+    g.locale = str(get_locale())
 
 
 @bp.route("/")

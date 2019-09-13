@@ -23,5 +23,11 @@
     {% endwith %}
 
     {% block content %}{% endblock content %}
+
+    {% block scripts %}
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+    {% endblock scripts %}
 </body>
 </html>
