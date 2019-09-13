@@ -1,9 +1,13 @@
 flask
 flask-babel
+flask-cors
+flask-httpauth
 flask-jwt
 flask-login
 flask-mail
+flask-marshmallow
 flask-migrate
 flask-sqlalchemy
 flask-wtf
+marshmallow-sqlalchemy
 python-dotenv

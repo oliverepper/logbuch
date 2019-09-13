@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-10 16:50+0200\n"
+"POT-Creation-Date: 2019-09-13 12:35+0200\n"
 "PO-Revision-Date: 2019-09-10 15:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -31,7 +31,7 @@ msgstr "Passwort"
 msgid "remember me"
 msgstr "An mich erinnern"
 
-#: app/console/forms.py:60
+#: app/console/forms.py:60 app/console/routes.py:44
 msgid "Sign In"
 msgstr "Anmelden"
 
@@ -43,7 +43,7 @@ msgstr "Registrierungs-Token verschicken"
 msgid "Please use a different email adress."
 msgstr "Bitte benutze eine andere E-Mail Adresse"
 
-#: app/console/forms.py:75
+#: app/console/forms.py:75 app/console/routes.py:115
 msgid "Request Password Reset"
 msgstr "Passwort Änderung anfordern"
 
@@ -63,47 +63,101 @@ msgstr "Altes Passwort"
 msgid "Old password is invalid."
 msgstr "Das alte Passwort ist ungültig."
 
-#: app/console/routes.py:21
+#: app/console/routes.py:40
+msgid "Invalid login or password"
+msgstr ""
+
+#: app/console/routes.py:56
 msgid "You're already logged in. No need to register."
 msgstr "Du bist schon angemeldet und musst Dich nicht mehr registrieren"
 
-#: app/console/routes.py:26
+#: app/console/routes.py:61
 msgid "Please check your email for instructions to create your account."
 msgstr "Bitte sieh in Deinen E-Mails nach um deinen Zugang zu erstellen."
 
-#: app/console/routes.py:28
+#: app/console/routes.py:63
 msgid "Register"
 msgstr "Registrieren"
 
-#: app/console/routes.py:34
+#: app/console/routes.py:69
 msgid "You're already logged in."
 msgstr "Du bist bereits angemeldet."
 
-#: app/console/routes.py:38
+#: app/console/routes.py:73
 msgid "Your registration token is invalid."
 msgstr "Dein Token ist nicht gültig."
 
-#: app/console/routes.py:45
+#: app/console/routes.py:80
 #, python-format
 msgid "User: %(user)s already exists."
 msgstr "Benutzer: %(user)s existiert bereits."
 
-#: app/console/routes.py:52
+#: app/console/routes.py:87
 msgid "Congratulations! Your registration is complete."
 msgstr "Glückwunsch. Dein Zugang ist jetzt eingerichtet."
 
-#: app/console/routes.py:56
+#: app/console/routes.py:91
 msgid "Complete Registration"
 msgstr "Registrierung abschließen."
+
+#: app/console/routes.py:101 app/console/routes.py:124
+msgid "You're already logged in. No need to reset your password. Just change it."
+msgstr ""
+
+#: app/console/routes.py:111
+msgid "Check your email for instructions to reset your password."
+msgstr ""
+
+#: app/console/routes.py:129
+msgid "Your password reset token was invalid."
+msgstr ""
+
+#: app/console/routes.py:132
+msgid "Looks like you've already reset your password once with that link."
+msgstr ""
+
+#: app/console/routes.py:140
+msgid "Your password has been reset."
+msgstr ""
+
+#: app/console/routes.py:143
+msgid "Reset Password"
+msgstr ""
+
+#: app/console/routes.py:154
+msgid "You're password has been changed."
+msgstr ""
+
+#: app/console/routes.py:157
+msgid "Change Password"
+msgstr ""
 
 #: app/templates/base.html:11
 msgid "Welcome to Logbuch"
 msgstr "Willkommen zu Logbuch"
 
+#: app/templates/console/index.html:4
+#, python-format
+msgid "Hello %(user)s"
+msgstr "Hallo %(user)s"
+
+#: app/templates/console/index.html:5
+msgid "Here's your API Token for Logbuch:"
+msgstr "Hier ist Dein API Token für Logbuch:"
+
+#: app/templates/console/index.html:7
+msgid "Please check for a new API Token after:"
+msgstr "Bitte besorge Dir ein neues API Token nach dem:"
+
 #: app/templates/console/email/registration.html:2
 #: app/templates/console/email/registration.txt:1
 msgid "To complete your registration, please visit:"
 msgstr "Um Deine Registrierung abzuschließen klicke bitte auf den folgenden Link:"
+
+#: app/templates/console/email/reset_password.html:2
+#: app/templates/console/email/reset_password.txt:1
+msgid "To reset your password click on the following link:"
+msgstr ""
 
 #~ msgid "Old password is invalid."
 #~ msgstr "Das alte Passwort ist ungültig"

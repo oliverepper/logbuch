@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Hello {{ current_user }}!</h1>
+<h1>{{ _('Hello %(user)s', user=user) }}</h1>
+<p>{{ _("Here's your API Token for Logbuch:") }}</p>
+<pre>
+{{ user.api_token.value }}
+</pre>
+<p>{{ _("Please check for a new API Token after:") }}</p>
+{{ user.api_token.expiration_date }}
 {% endblock content %}

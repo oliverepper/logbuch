@@ -4,7 +4,7 @@ import pytest
 
 from app import create_app, db
 from app.console.registration import get_registration_token
-from app.models import User
+from app.models import User, Log
 from config import TestConfig
 
 
@@ -17,6 +17,8 @@ def client():
         db.create_all()
         user = User(email="oliver.epper@gmail.com", cellphone="+4915123595397")
         user.set_password("test")
+        log = Log(title="Golf")
+        user.my_logs.append(log)
         db.session.add(user)
         db.session.commit()
         yield client
@@ -35,3 +37,11 @@ def registration_tokens():
     tokens.new_user = get_registration_token('oliver.epper+new_user@gmail.com')
     tokens.existing_user = get_registration_token('oliver.epper@gmail.com')
     yield tokens
+
+
+@pytest.fixture(scope="module")
+def api_token():
+    user = User.query.first()
+    user.update_api_token()
+    db.session.commit()
+    yield user.api_token

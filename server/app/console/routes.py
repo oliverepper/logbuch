@@ -4,19 +4,29 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from app import db
 from app.console import bp
-from app.console.forms import (ChangePasswordForm, LoginForm,
-                               RequestPasswordResetForm,
-                               RequestRegistrationForm, SetPasswordForm)
-from app.console.registration import (send_password_reset_email,
-                                      send_registration_email,
-                                      verify_registration_token)
+from app.console.forms import (
+    ChangePasswordForm,
+    LoginForm,
+    RequestPasswordResetForm,
+    RequestRegistrationForm,
+    SetPasswordForm,
+)
+from app.console.registration import (
+    send_password_reset_email,
+    send_registration_email,
+    verify_registration_token,
+)
 from app.models import User
 
 
 @bp.route("/")
 @bp.route("/index")
 def index():
-    return render_template("console/index.html", current_user=current_user)
+    if current_user.is_authenticated:
+        current_user.update_api_token() if not current_user.api_token or not current_user.api_token.is_valid else None
+        db.session.commit()
+        return render_template("console/index.html", user=current_user)
+    return redirect(url_for("console.login"))
 
 
 @bp.route("/login", methods=["GET", "POST"])
@@ -101,7 +111,9 @@ def request_password_reset():
             flash(_("Check your email for instructions to reset your password."))
         return redirect(url_for("console.login"))
     return render_template(
-        "console/request_password_reset.html", title=_("Request Password Reset"), form=form
+        "console/request_password_reset.html",
+        title=_("Request Password Reset"),
+        form=form,
     )
 
 
@@ -127,7 +139,9 @@ def reset_password(token):
         login_user(user)
         flash(_("Your password has been reset."))
         return redirect(url_for("console.index"))
-    return render_template("console/set_password.html", title=_("Reset Password"), form=form)
+    return render_template(
+        "console/set_password.html", title=_("Reset Password"), form=form
+    )
 
 
 @bp.route("/change_password", methods=["GET", "POST"])

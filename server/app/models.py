@@ -1,3 +1,6 @@
+import base64
+import os
+from datetime import datetime, timedelta
 from time import time
 
 import jwt
@@ -5,7 +8,22 @@ from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db, login
+from app import db, login, ma
+
+
+class ApiToken(db.Model):
+    __tablename__ = "api_tokens"
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(64), index=True)
+    expiration_date = db.Column(db.DateTime, default=0)
+
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    owner = db.relationship("User", back_populates="api_token")
+
+    @property
+    def is_valid(self) -> bool:
+        now = datetime.utcnow()
+        return now < self.expiration_date
 
 
 class User(UserMixin, db.Model):
@@ -17,7 +35,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256))
     allow_password_reset = db.Column(db.Boolean, default=False)
 
-    logs = db.relationship("Log", back_populates="owner")
+    api_token = db.relationship("ApiToken", uselist=False, back_populates="owner")
+
+    my_logs = db.relationship("Log", back_populates="owner")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -45,14 +65,37 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
+        
+    def update_api_token(self, expires_in=60):
+        if self.api_token:
+            db.session.delete(self.api_token)
+        now = datetime.utcnow()
+        self.api_token = ApiToken(
+            value=base64.b64encode(os.urandom(32)).decode('utf-8'),
+            expiration_date=now + timedelta(seconds=expires_in)
+        )
+        db.session.add(self.api_token)
+
 
 class Log(db.Model):
     __tablename__ = "logs"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), nullable=False)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    owner = db.relationship("User", back_populates="logs")
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    owner = db.relationship("User", back_populates="my_logs")
+
+
+class LogSchema(ma.ModelSchema):
+    class Meta:
+        model = Log
+
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("api.get_log", id="<id>"),
+            "collection": ma.URLFor("api.get_logs"),
+        }
+    )
 
 
 class Entry(db.Model):
