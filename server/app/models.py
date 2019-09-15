@@ -65,16 +65,24 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
-        
     def update_api_token(self, expires_in=60):
         if self.api_token:
             db.session.delete(self.api_token)
         now = datetime.utcnow()
         self.api_token = ApiToken(
-            value=base64.b64encode(os.urandom(32)).decode('utf-8'),
-            expiration_date=now + timedelta(seconds=expires_in)
+            value=base64.b64encode(os.urandom(32)).decode("utf-8"),
+            expiration_date=now + timedelta(seconds=expires_in),
         )
         db.session.add(self.api_token)
+
+
+class Entry(db.Model):
+    __tablename__ = "entries"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.UnicodeText)
+
+    log_id = db.Column(db.Integer, db.ForeignKey("logs.id"), nullable=False)
+    log = db.relationship("Log", back_populates="entries")
 
 
 class Log(db.Model):
@@ -84,6 +92,8 @@ class Log(db.Model):
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     owner = db.relationship("User", back_populates="my_logs")
+
+    entries = db.relationship("Entry", back_populates="log")
 
 
 class LogSchema(ma.ModelSchema):
@@ -96,11 +106,6 @@ class LogSchema(ma.ModelSchema):
             "collection": ma.URLFor("api.get_logs"),
         }
     )
-
-
-class Entry(db.Model):
-    __tablename__ = "entries"
-    id = db.Column(db.Integer, primary_key=True)
 
 
 class Tag(db.Model):

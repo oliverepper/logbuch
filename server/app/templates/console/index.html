@@ -9,4 +9,16 @@
 <p>{{ _("Please check for a new API Token after:") }}</p>
 {% set exp_date = user.api_token.expiration_date %}
 {{ moment(exp_date).format('LLLL') }} ({{ moment(exp_date).fromNow() }})
+<hr>
+{{ _("Last Entries") }}
+{% for log in user.my_logs %}
+<p>
+    {{ log.title }}:<br>
+    <ul>
+        {% for entry in log.entries %}
+            <li>{{ entry.content }}</li>
+        {% endfor %}
+    </ul>
+</p>
+{% endfor %}
 {% endblock content %}
