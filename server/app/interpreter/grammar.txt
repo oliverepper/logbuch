@@ -1,0 +1,21 @@
+expr: ((LOAD|CREATE)? factor ->)? factor
+factor: STRING
+
+Das ist ein Eintrag             // Das geht ins erste Log des Benutzers
+LOAD Golf -> Eintrag        // Das geht in das Logbuch mit dem Titel Golf, das Logbuch wird geladen
+CREATE Fitness -> Eintrag   // Das geht in das Logbuch mit dem Titel Fitness
+
+
+Token:
+
+LOAD "LOAD"
+CREATE "CREATE"
+APPEND "->"
+STRING alles außer: RESERVED_KEYWORDS und ->
+
+
+AST für LOAD Golf APPEND Eintrag:
+
+        APPEND
+    LOAD    STRING
+STRING

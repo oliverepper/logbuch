@@ -25,6 +25,11 @@ def client():
 
 
 @pytest.fixture(scope="module")
+def session(client):
+    yield db.session
+
+
+@pytest.fixture(scope="module")
 def password_reset_token():
     user = User.query.filter_by(email="oliver.epper@gmail.com").first()
     token = user.get_password_reset_token()
