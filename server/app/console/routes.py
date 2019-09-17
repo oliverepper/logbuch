@@ -10,7 +10,7 @@ from app.console.forms import (ChangePasswordForm, LoginForm,
 from app.console.registration import (send_password_reset_email,
                                       send_registration_email,
                                       verify_registration_token)
-from app.models import User
+from app.models import Entry, User
 
 
 @bp.before_app_request
@@ -142,6 +142,13 @@ def reset_password(token):
         "console/set_password.html", title=_("Reset Password"), form=form
     )
 
+
+@bp.route("/delete_entry/<id>")
+def delete_entry(id: int):
+    db.session.delete(Entry.query.get(id))
+    db.session.commit()
+    flash(f"Entry {id} deleted.")
+    return redirect(url_for("console.index"))
 
 @bp.route("/change_password", methods=["GET", "POST"])
 @login_required

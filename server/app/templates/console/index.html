@@ -16,7 +16,13 @@
     {{ log.title }}:<br>
     <ul>
         {% for entry in log.entries %}
-            <li>{{ entry.content }}</li>
+        <li>
+            {{ entry.content }}
+            <small>
+                {{ moment(entry.ctime).fromNow() }}
+                <a href="{{ url_for('console.delete_entry', id=entry.id) }}">{{ _("Delete Entry") }}</a>
+            </small>
+        </li>
         {% endfor %}
     </ul>
 </p>
