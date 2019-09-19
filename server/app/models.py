@@ -1,6 +1,7 @@
 import base64
 import os
 from datetime import datetime, timedelta
+from textwrap import shorten
 from time import time
 
 import jwt
@@ -65,7 +66,7 @@ class User(UserMixin, db.Model):
             return
         return User.query.get(id)
 
-    def update_api_token(self, expires_in=60):
+    def update_api_token(self, expires_in=3600):
         if self.api_token:
             db.session.delete(self.api_token)
         now = datetime.utcnow()
@@ -98,21 +99,35 @@ class Log(db.Model):
     entries = db.relationship("Entry", back_populates="log")
 
 
+class Tag(db.Model):
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True)
+
+
 class LogSchema(ma.ModelSchema):
     class Meta:
         model = Log
 
-    _links = ma.Hyperlinks(
-        {
-            "self": ma.URLFor("api.get_log", id="<id>"),
-            "collection": ma.URLFor("api.get_logs"),
-        }
-    )
+    # _links = ma.Hyperlinks(
+    #     {
+    #         "self": ma.URLFor("api.get_log", id="<id>"),
+    #         "collection": ma.URLFor("api.get_logs"),
+    #     }
+    # )
 
 
-class Tag(db.Model):
-    __tablename__ = "tags"
-    id = db.Column(db.Integer, primary_key=True)
+class EntrySchema(ma.ModelSchema):
+    class Meta:
+        model = Entry
+
+    # log = ma.Nested(LogSchema)
+
+    # _links = ma.Hyperlinks(
+    #     {
+    #         "self": ma.URLFor("api.get_entry", id="<id>"),
+    #         "collection": ma.URLFor("api.get_log", id="<log.id>"),
+    #     }
+    # )
 
 
 @login.user_loader

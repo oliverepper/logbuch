@@ -15,11 +15,11 @@ def client():
 
     with app.app_context():
         db.create_all()
-        user = User(email="oliver.epper@gmail.com", cellphone="+4915123595397")
-        user.set_password("test")
-        log = Log(title="Golf")
-        user.my_logs.append(log)
-        db.session.add(user)
+        user_one = User(email="oliver.epper@gmail.com", cellphone="+4915123595397")
+        user_one.set_password("test")
+        user_two = User(email="oliver.epper+test@gmail.com")
+        user_two.set_password("test")
+        db.session.add_all([user_one, user_two])
         db.session.commit()
         yield client
 
@@ -45,8 +45,12 @@ def registration_tokens():
 
 
 @pytest.fixture(scope="module")
-def api_token():
-    user = User.query.first()
-    user.update_api_token()
+def api_tokens():
+    api_tokens = namedtuple('api_tokens', 'token_user_one token_user_two')
+    users = User.query.all()
+    for user in users:
+        user.update_api_token()
+    api_tokens.token_user_one = users[0].api_token
+    api_tokens.token_user_two = users[1].api_token
     db.session.commit()
-    yield user.api_token
+    yield api_tokens

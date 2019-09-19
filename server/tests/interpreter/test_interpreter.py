@@ -1,12 +1,17 @@
+from app import db
+from app.interpreter.interpreter import Interpreter
 from app.interpreter.lexer import Lexer
 from app.interpreter.parser import Parser
-from app.interpreter.interpreter import Interpreter
-from app.models import User
+from app.models import Log, User
 
 
 def test_simple_entry(session):
     text = "Hallo Interpreter"
     user = User.query.first()
+    log = Log(title="Golf")
+    user.my_logs.append(log)
+    db.session.add(user)
+    db.session.commit()
     lx=Lexer(text)
     p=Parser(lx)
     command=p.parse()
