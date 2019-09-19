@@ -119,6 +119,7 @@ class LogSchema(ma.ModelSchema):
 class EntrySchema(ma.ModelSchema):
     class Meta:
         model = Entry
+        dump_only = ('mtime', 'ctime')
 
     # log = ma.Nested(LogSchema)
 
