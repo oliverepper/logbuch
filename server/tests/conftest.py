@@ -71,3 +71,18 @@ def log_with_entries():
     user.my_logs.append(log)
     db.session.commit()
     yield log
+
+
+@pytest.fixture(scope="function")
+def src_dst_logs():
+    src_dst_logs = namedtuple('src_dst_logs', 'src_log dst_log dst_log_other_user')
+    users = User.query.all()
+    src_dst_logs.src_log = Log(title="Source Log")
+    src_dst_logs.dst_log = Log(title="Destination Log")
+    src_dst_logs.dst_log_other_user = Log(title="Destination Log other user")
+    users[0].my_logs.append(src_dst_logs.src_log)
+    users[0].my_logs.append(src_dst_logs.dst_log)
+    users[1].my_logs.append(src_dst_logs.dst_log_other_user)
+    src_dst_logs.src_log.entries.append(Entry(content="Please copy me."))
+    db.session.commit()
+    yield src_dst_logs

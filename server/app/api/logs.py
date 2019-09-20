@@ -30,11 +30,6 @@ def create_log():
 @bp.route("/api/logs", methods=["GET"])
 @token_auth.login_required
 def get_logs():
-    """
-    Get the user that sends the request via his token and then return an ApiResult for his logs
-    logs = g.current_user.logs
-    return ApiResult({"logs": LogSchema(many=True).dump(logs).data})
-    """
     logs = Log.query.filter_by(owner=g.current_user).all()
     return ApiResult({"logs": LogSchema(many=True).dump(logs)})
 
@@ -46,7 +41,7 @@ def get_log(id):
     try:
         log = Log.query.filter_by(owner=g.current_user, id=id).one()
     except Exception as e:
-        raise ApiException(f"Log <{str(id)}> not available.", 404)
+        raise ApiException(f"<Log {str(id)}> not available.", 404)
     return ApiResult(LogSchema().dump(log))
 
 
@@ -63,9 +58,10 @@ def update_log(id):
         LogSchema().load(json_data, instance=log, session=db.session)
     except Exception as e:
         raise ApiException(str(e))
-    if log.id != id:
-        db.session.rollback()
-        raise ApiException(f"You're not allowed to change the id of {log}.", 403)
+    # with dump_only = ('id',) the following is no longer necessary
+    # if log.id != id:
+    #     db.session.rollback()
+    #     raise ApiException(f"You're not allowed to change the id of {log}.", 403)
     if log.owner != g.current_user:
         db.session.rollback()
         raise ApiException(f"You are not allowed to update the owner for {log}.", 403)

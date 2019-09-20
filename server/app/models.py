@@ -109,6 +109,7 @@ class Tag(db.Model):
 class LogSchema(ma.ModelSchema):
     class Meta:
         model = Log
+        dump_only = ('id', 'mtime', 'ctime')
 
     # _links = ma.Hyperlinks(
     #     {
