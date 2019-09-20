@@ -19,12 +19,12 @@ source venv/bin/activate
 ### Virtual Environment einrichten
 ```bash
 pip install --upgrade pip
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 optional:
 ```bash
-pip install pytest black flake8
+pip install pytest pytest-cov black flake8
 ```
 
 ### Logbuch bootstrappen
