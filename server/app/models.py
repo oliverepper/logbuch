@@ -98,7 +98,7 @@ class Log(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     owner = db.relationship("User", back_populates="my_logs")
 
-    entries = db.relationship("Entry", back_populates="log")
+    entries = db.relationship("Entry", back_populates="log", cascade="all, delete, delete-orphan")
 
 
 class Tag(db.Model):

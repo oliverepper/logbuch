@@ -3,5 +3,6 @@
 __pycache__
 logs
 instance
-server/.coverage
-server/cov.xml
+.coverage
+cov.xml
+.pytest_cache
