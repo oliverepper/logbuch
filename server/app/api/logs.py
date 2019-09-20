@@ -1,5 +1,3 @@
-import logging
-
 from flask import g, request
 
 from app import ApiException, ApiResult, db
@@ -48,7 +46,7 @@ def get_log(id):
     try:
         log = Log.query.filter_by(owner=g.current_user, id=id).one()
     except Exception as e:
-        raise ApiException("Log <" + str(id) + "> not available.")
+        raise ApiException(f"Log <{str(id)}> not available.", 404)
     return ApiResult(LogSchema().dump(log))
 
 
@@ -62,7 +60,7 @@ def update_log(id):
     except Exception as e:
         raise ApiException(f"<Log {id}> not found in your logs.", 404)
     try:
-        log = LogSchema().load(json_data, instance=log, session=db.session)
+        LogSchema().load(json_data, instance=log, session=db.session)
     except Exception as e:
         raise ApiException(str(e))
     if log.id != id:

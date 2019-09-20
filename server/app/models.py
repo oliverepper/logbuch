@@ -92,6 +92,8 @@ class Log(db.Model):
     __tablename__ = "logs"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), nullable=False)
+    ctime = db.Column(db.DateTime, default=datetime.utcnow)
+    mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
 
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     owner = db.relationship("User", back_populates="my_logs")
@@ -119,7 +121,7 @@ class LogSchema(ma.ModelSchema):
 class EntrySchema(ma.ModelSchema):
     class Meta:
         model = Entry
-        dump_only = ('mtime', 'ctime')
+        dump_only = ('id', 'mtime', 'ctime')
 
     # log = ma.Nested(LogSchema)
 

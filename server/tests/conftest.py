@@ -4,7 +4,7 @@ import pytest
 
 from app import create_app, db
 from app.console.registration import get_registration_token
-from app.models import User, Log
+from app.models import Entry, Log, User
 from config import TestConfig
 
 
@@ -54,3 +54,20 @@ def api_tokens():
     api_tokens.token_user_two = users[1].api_token
     db.session.commit()
     yield api_tokens
+
+@pytest.fixture(scope="function")
+def db_with_log():
+    user = User.query.filter_by(email="oliver.epper@gmail.com").first()
+    user.my_logs.append(Log(title="Golf"))
+    db.session.commit()
+
+
+@pytest.fixture(scope="function")
+def log_with_entries():
+    user = User.query.filter_by(email="oliver.epper@gmail.com").first()
+    log = Log(title="Golf")
+    for text in ('Eintrag 1', 'Eintrag 2', 'Eintrag 3'):
+        log.entries.append(Entry(content=text))
+    user.my_logs.append(log)
+    db.session.commit()
+    yield log
