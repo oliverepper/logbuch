@@ -1,11 +1,12 @@
 import logging
 
 from flask import g, request
+from sqlalchemy import or_
 
 from app import ApiException, ApiResult, db
 from app.api import bp
 from app.api.auth import token_auth
-from app.models import Log, Entry, EntrySchema
+from app.models import Entry, EntrySchema, Log, User
 
 
 # CREATE ENTRY
@@ -14,12 +15,16 @@ from app.models import Log, Entry, EntrySchema
 def create_entry(log_id):
     json_data = request.get_json() or {}
     try:
-        log = Log.query.filter_by(owner=g.current_user, id=log_id).one()
+        # log = Log.query.filter_by(owner=g.current_user, id=log_id).one()
+        log = Log.query.join(User).filter(
+            or_(Log.owner == g.current_user, Log.members.contains(g.current_user)),
+            Log.id == log_id,
+        ).one()
     except Exception as e:
         raise ApiException(
             f"<Log {log_id}> not found in your logs. Cannot create Entry.", 404
         )
-    entry = Entry(log=log)
+    entry = Entry(log=log, creator=g.current_user)
     db.session.add(log)
     try:
         EntrySchema().load(json_data, instance=entry, session=db.session)

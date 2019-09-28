@@ -1,3 +1,24 @@
+{% macro present_log(log, show_owner=False) %}
+<p>
+    {{ log.title }} {% if show_owner %}{{ log.owner }}{% endif %}:<br>
+    <ul>
+        {% for entry in log.entries %}
+        <li>
+            {% if entry.creator != log.owner -%}
+            <small>{{ entry.creator }}:</small>
+            {%- endif %}
+            {{ entry.content }}
+            <small>
+                {{ moment(entry.ctime).fromNow() }}
+                <a href="{{ url_for('console.delete_entry', id=entry.id) }}">{{ _("Delete Entry") }}</a>
+            </small>
+        </li>
+        {% endfor %}
+    </ul>
+</p>
+{% endmacro %}
+
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -9,22 +30,19 @@
 <p>{{ _("Please check for a new API Token after:") }}</p>
 {% set exp_date = user.api_token.expiration_date %}
 {{ moment(exp_date).format('LLLL') }} ({{ moment(exp_date).fromNow() }})
+
 <hr>
+
 {{ _("Last Entries") }}
+
 {% for log in user.my_logs %}
-<p>
-    {{ log.title }}:<br>
-    <ul>
-        {% for entry in log.entries %}
-        <li>
-            {{ entry.content }}
-            <small>
-                {{ moment(entry.ctime).fromNow() }}
-                <a href="{{ url_for('console.delete_entry', id=entry.id) }}">{{ _("Delete Entry") }}</a>
-            </small>
-        </li>
-        {% endfor %}
-    </ul>
-</p>
+{{ present_log(log) }}
 {% endfor %}
+
+<hr>
+
+{% for log in user.foreign_logs %}
+{{ present_log(log, show_owner=true) }}
+{% endfor %}
+
 {% endblock content %}

@@ -16,6 +16,7 @@ from . import logs, entries
 @basic_auth.login_required
 def get_token():
     token = g.current_user.api_token
+    # FIXME: token can be null, here
     if not token.is_valid:
         g.current_user.update_api_token()
         db.session.commit()

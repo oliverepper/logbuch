@@ -1,15 +1,37 @@
 import base64
 import os
 from datetime import datetime, timedelta
+from enum import Enum
 from textwrap import shorten
 from time import time
 
 import jwt
 from flask import current_app
 from flask_login import UserMixin
+from sqlalchemy.ext.associationproxy import association_proxy
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login, ma
+
+
+class MembershipType(Enum):
+    READ = 1
+    WRITE = 2
+
+    def __gt__(self, other):
+        return self.value > other.value
+
+    def __lt__(self, other):
+        return not self.__gt__(other)
+
+
+class Membership(db.Model):
+    __tablename__ = "memberships"
+    log_id = db.Column(db.Integer, db.ForeignKey("logs.id"), primary_key=True)
+    log = db.relationship("Log")
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
+    user = db.relationship("User")
+    type = db.Column(db.Enum(MembershipType), default=MembershipType.READ)
 
 
 class ApiToken(db.Model):
@@ -39,6 +61,9 @@ class User(UserMixin, db.Model):
     api_token = db.relationship("ApiToken", uselist=False, back_populates="owner")
 
     my_logs = db.relationship("Log", back_populates="owner")
+
+    _foreign_logs = db.relationship("Membership", back_populates="user")
+    foreign_logs = association_proxy('_foreign_logs', 'log')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -81,6 +106,8 @@ class Entry(db.Model):
     __tablename__ = "entries"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.UnicodeText)
+    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    creator = db.relationship("User")
     ctime = db.Column(db.DateTime, default=datetime.utcnow)
     mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
 
@@ -98,7 +125,12 @@ class Log(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     owner = db.relationship("User", back_populates="my_logs")
 
-    entries = db.relationship("Entry", back_populates="log", cascade="all, delete, delete-orphan")
+    entries = db.relationship(
+        "Entry", back_populates="log", cascade="all, delete, delete-orphan"
+    )
+
+    _members = db.relationship("Membership", back_populates="log")
+    members = association_proxy("_members", "user")
 
 
 class Tag(db.Model):
@@ -109,7 +141,7 @@ class Tag(db.Model):
 class LogSchema(ma.ModelSchema):
     class Meta:
         model = Log
-        dump_only = ('id', 'mtime', 'ctime')
+        dump_only = ("id", "mtime", "ctime")
 
     # _links = ma.Hyperlinks(
     #     {
@@ -122,7 +154,7 @@ class LogSchema(ma.ModelSchema):
 class EntrySchema(ma.ModelSchema):
     class Meta:
         model = Entry
-        dump_only = ('id', 'mtime', 'ctime')
+        dump_only = ("id", "mtime", "ctime")
 
     # log = ma.Nested(LogSchema)
 
