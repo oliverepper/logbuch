@@ -1,11 +1,11 @@
 {% macro present_log(log, show_owner=False) %}
 <p>
-    {{ log.title }} {% if show_owner %}{{ log.owner }}{% endif %}:<br>
+    {% if show_owner %}<small>{{ _('%(owner)ss Log: ', owner=log.owner) }}</small>{% endif %}{{ log.title }}<br>
     <ul>
         {% for entry in log.entries %}
         <li>
             {% if entry.creator != log.owner -%}
-            <small>{{ entry.creator }}:</small>
+            <small>{{ _('%(creator)s says: ', creator=entry.creator) }}</small>
             {%- endif %}
             {{ entry.content }}
             <small>

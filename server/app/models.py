@@ -72,6 +72,8 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
+        if self.username:
+            return self.username
         return "<" + self.email + ">"
 
     def get_password_reset_token(self, expires_in=600):
