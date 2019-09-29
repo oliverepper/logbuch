@@ -1,8 +1,8 @@
-"""default READ permission for members
+"""default MembershipType READ for Memberships
 
-Revision ID: bea5ba7c81a9
-Revises: 7e5ecabfc448
-Create Date: 2019-09-28 23:38:26.200366
+Revision ID: fbc06530ccc8
+Revises: 9c74e1d40dc7
+Create Date: 2019-09-29 10:25:18.880057
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bea5ba7c81a9'
-down_revision = '7e5ecabfc448'
+revision = 'fbc06530ccc8'
+down_revision = '9c74e1d40dc7'
 branch_labels = None
 depends_on = None
 
