@@ -62,8 +62,8 @@ class User(UserMixin, db.Model):
 
     my_logs = db.relationship("Log", back_populates="owner")
 
-    _foreign_logs = db.relationship("Membership", back_populates="user")
-    foreign_logs = association_proxy('_foreign_logs', 'log')
+    memberships = db.relationship("Membership", back_populates="user")
+    foreign_logs = association_proxy('memberships', 'log')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -129,8 +129,8 @@ class Log(db.Model):
         "Entry", back_populates="log", cascade="all, delete, delete-orphan"
     )
 
-    _members = db.relationship("Membership", back_populates="log")
-    members = association_proxy("_members", "user")
+    memberships = db.relationship("Membership", back_populates="log")
+    members = association_proxy("memberships", "user")
 
 
 class Tag(db.Model):
