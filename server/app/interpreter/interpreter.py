@@ -19,7 +19,7 @@ class Interpreter(NodeVisitor):
         self.session = session
 
     def visit_String(self, node: String):
-        entry = Entry(content=node.value)
+        entry = Entry(content=node.value, creator=self.user)
         self.user.my_logs[0].entries.append(entry)
         self.session.add(self.user)
         self.session.commit()
@@ -40,7 +40,7 @@ class Interpreter(NodeVisitor):
 
     def visit_Append(self, node):
         self.visit(node.left)
-        entry = Entry(content=node.right.value)
+        entry = Entry(content=node.right.value, creator=self.user)
         self.log.entries.append(entry)
         self.session.commit()
         print(f"Erzeuge Eintrag <{node.right.value}> im Logbuch {self.log.title}")

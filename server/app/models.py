@@ -134,6 +134,9 @@ class Log(db.Model):
     memberships = db.relationship("Membership", back_populates="log")
     members = association_proxy("memberships", "user")
 
+    def __repr__(self):
+        return f"<Log {self.id}>"
+
 
 class Tag(db.Model):
     __tablename__ = "tags"

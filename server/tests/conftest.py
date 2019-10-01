@@ -67,7 +67,7 @@ def log_with_entries():
     user = User.query.filter_by(email="oliver.epper@gmail.com").first()
     log = Log(title="Golf")
     for text in ('Eintrag 1', 'Eintrag 2', 'Eintrag 3'):
-        log.entries.append(Entry(content=text))
+        log.entries.append(Entry(content=text, creator=user))
     user.my_logs.append(log)
     db.session.commit()
     yield log
@@ -83,6 +83,6 @@ def src_dst_logs():
     users[0].my_logs.append(src_dst_logs.src_log)
     users[0].my_logs.append(src_dst_logs.dst_log)
     users[1].my_logs.append(src_dst_logs.dst_log_other_user)
-    src_dst_logs.src_log.entries.append(Entry(content="Please copy me."))
+    src_dst_logs.src_log.entries.append(Entry(content="Please copy me.", creator=users[0]))
     db.session.commit()
     yield src_dst_logs
