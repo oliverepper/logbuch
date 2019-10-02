@@ -5,6 +5,9 @@ from app.api import bp
 from app.api.auth import token_auth
 from app.models import Log, LogSchema
 
+from app.data_service.logs import read_log
+from app.data_service import DataServiceException
+
 
 # CREATE LOG
 @bp.route("/api/logs", methods=["POST"])
@@ -39,10 +42,16 @@ def get_logs():
 @token_auth.login_required
 def get_log(id):
     try:
-        log = Log.query.filter_by(owner=g.current_user, id=id).one()
-    except Exception as e:
-        raise ApiException(f"<Log {str(id)}> not available.", 404)
+        log = read_log(id, user=g.current_user)
+    except DataServiceException as e:
+        raise ApiException(e.message, e.status)
     return ApiResult(LogSchema().dump(log))
+    
+    # try:
+    #     log = Log.query.filter_by(owner=g.current_user, id=id).one()
+    # except Exception as e:
+    #     raise ApiException(f"<Log {str(id)}> not available.", 404)
+    # return ApiResult(LogSchema().dump(log))
 
 
 # UPDATE LOG

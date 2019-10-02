@@ -65,7 +65,7 @@ def test_get_foreign_log(client, api_tokens):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert "<Log 1> not available." in json_data["message"]
+    assert "<Log 1> not found in your logs." in json_data["message"]
 
 
 # UPDATE

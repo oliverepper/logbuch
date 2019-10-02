@@ -49,6 +49,45 @@ class ApiToken(db.Model):
         return now < self.expiration_date
 
 
+class Entry(db.Model):
+    __tablename__ = "entries"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.UnicodeText)
+    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    creator = db.relationship("User")
+    ctime = db.Column(db.DateTime, default=datetime.utcnow)
+    mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
+
+    log_id = db.Column(db.Integer, db.ForeignKey("logs.id"), nullable=False)
+    log = db.relationship("Log", back_populates="entries")
+
+
+class Log(db.Model):
+    __tablename__ = "logs"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(256), nullable=False)
+    ctime = db.Column(db.DateTime, default=datetime.utcnow)
+    mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
+
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    owner = db.relationship("User", back_populates="my_logs")
+
+    entries = db.relationship(
+        "Entry", back_populates="log", cascade="all, delete, delete-orphan"
+    )
+
+    memberships = db.relationship("Membership", back_populates="log")
+    members = association_proxy("memberships", "user")
+
+    def __repr__(self):
+        return f"<Log {self.id}>"
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True)
+
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -63,7 +102,7 @@ class User(UserMixin, db.Model):
     my_logs = db.relationship("Log", back_populates="owner")
 
     memberships = db.relationship("Membership", back_populates="user")
-    foreign_logs = association_proxy('memberships', 'log')
+    foreign_logs = association_proxy("memberships", "log")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -103,44 +142,14 @@ class User(UserMixin, db.Model):
         )
         db.session.add(self.api_token)
 
-
-class Entry(db.Model):
-    __tablename__ = "entries"
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.UnicodeText)
-    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    creator = db.relationship("User")
-    ctime = db.Column(db.DateTime, default=datetime.utcnow)
-    mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
-
-    log_id = db.Column(db.Integer, db.ForeignKey("logs.id"), nullable=False)
-    log = db.relationship("Log", back_populates="entries")
-
-
-class Log(db.Model):
-    __tablename__ = "logs"
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256), nullable=False)
-    ctime = db.Column(db.DateTime, default=datetime.utcnow)
-    mtime = db.Column(db.DateTime, onupdate=datetime.utcnow)
-
-    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    owner = db.relationship("User", back_populates="my_logs")
-
-    entries = db.relationship(
-        "Entry", back_populates="log", cascade="all, delete, delete-orphan"
-    )
-
-    memberships = db.relationship("Membership", back_populates="log")
-    members = association_proxy("memberships", "user")
-
-    def __repr__(self):
-        return f"<Log {self.id}>"
-
-
-class Tag(db.Model):
-    __tablename__ = "tags"
-    id = db.Column(db.Integer, primary_key=True)
+    def has_write_permission(self, log: Log) -> bool:
+        if log in self.my_logs:
+            return True
+        try:
+            ms = Membership.query.filter_by(log=log, user=self).one()
+        except Exception as e:
+            return False
+        return ms.type == MembershipType.WRITE
 
 
 class LogSchema(ma.ModelSchema):

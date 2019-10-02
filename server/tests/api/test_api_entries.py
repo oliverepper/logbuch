@@ -36,7 +36,7 @@ def test_create_entry_in_foreign_log(client, api_tokens, db_with_log):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert "<Log 1> not found in your logs. Cannot create Entry." in json_data["message"]
+    assert "<Log 1> not found in your logs. Cannot create entry." in json_data["message"]
 
 
 # CREATE ENTRY IN DIFFERENT LOG
@@ -92,7 +92,7 @@ def test_get_entry_foreign_key(client, api_tokens):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert "Entry <1> not available." in json_data["message"]
+    assert "<Entry 1> not found in your logs." in json_data["message"]
 
 
 # UPDATE ENTRY
@@ -116,7 +116,7 @@ def test_update_foreign_entry(client, api_tokens):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert "<Entry 1> not available." in json_data["message"]
+    assert "<Entry 1> not found in your logs." in json_data["message"]
 
 
 # UPDATE ENTRY BROKEN JSON
