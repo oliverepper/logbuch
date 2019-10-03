@@ -24,11 +24,17 @@ def create_entry(log_id: int, entry_data: Dict, user: User) -> Entry:
     except Exception as e:
         raise DataServiceException(str(e))
 
-    if entry.log != log:
+    if not entry.log is log:
         # fucker has tried to fool us about the log. (changed the log in the entry_data)
         # go fuck him back
         db.session.rollback()
         raise DataServiceException(f"Argument error. Log mismatch.", 403)
+
+    # FIXME: Need to check write permission or ownership!
+    if not user.has_write_permission(log):
+        db.session.rollback()
+        raise DataServiceException(f"You're not allowed to write to {log}", 403)
+
     db.session.commit()
     return entry
 
@@ -62,7 +68,8 @@ def update_entry(entry_id: int, entry_data: Dict, user: User) -> Entry:
     except Exception as e:
         raise DataServiceException(str(e))
 
-    if entry.log.owner != user or not user.has_write_permission(entry.log):
+    # check for write permission (that includes ownership)
+    if not user.has_write_permission(entry.log):
         # fucker trying to fool us! go fuck him back
         db.session.rollback()
         raise DataServiceException("You're not allowed to perform this update.", 403)
