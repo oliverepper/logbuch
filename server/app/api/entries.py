@@ -124,14 +124,19 @@ def update_entry(id):
 @token_auth.login_required
 def delete_entry(id):
     try:
-        entry = (
-            Entry.query.join(Log)
-            .filter(Log.owner == g.current_user, Entry.id == id)
-            .one()
-        )
-    except Exception as e:
-        raise ApiException(f"<Entry {str(id)}> not available.", 404)
-    log = entry.log
-    db.session.delete(entry)
-    db.session.commit()
+        entry, log = entries.delete_entry(id, g.current_user)
+    except DataServiceException as dse:
+        raise ApiException(dse.message, dse.status)
     return ApiResult({"message": f"{entry} deleted from {log}."})
+    # try:
+    #     entry = (
+    #         Entry.query.join(Log)
+    #         .filter(Log.owner == g.current_user, Entry.id == id)
+    #         .one()
+    #     )
+    # except Exception as e:
+    #     raise ApiException(f"<Entry {str(id)}> not available.", 404)
+    # log = entry.log
+    # db.session.delete(entry)
+    # db.session.commit()
+    # return ApiResult({"message": f"{entry} deleted from {log}."})

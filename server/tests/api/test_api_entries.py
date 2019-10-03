@@ -185,4 +185,4 @@ def test_delete_foreign_entry(client, api_tokens):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert "<Entry 1> not available." in json_data["message"]
+    assert "<Entry 1> not found in your logs." in json_data["message"]
