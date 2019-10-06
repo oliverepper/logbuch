@@ -1,0 +1,2 @@
+{{ _("To accept your membership invite, please visit:") }}
+{{ url_for('console.accept_membership', token=token, _external=True) }}

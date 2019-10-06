@@ -162,3 +162,10 @@ def change_password():
     return render_template(
         "console/change_password.html", title=_("Change Password"), form=form
     )
+
+
+@bp.route("/accept_membership/<token>", methods=["GET", "POST"])
+@login_required
+def accept_membership(token):
+    # TODO: implement
+    pass
