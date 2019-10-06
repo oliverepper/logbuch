@@ -70,7 +70,7 @@ def test_get_entries_foreign_log(client, api_tokens, log_with_entries):
     )
     json_data = response.get_json() or {}
     assert response.status_code == 404
-    assert f"{log_with_entries} not available" in json_data["message"]
+    assert f"{log_with_entries} not found in your logs." in json_data["message"]
 
 
 # READ ENTRY

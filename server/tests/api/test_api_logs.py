@@ -12,7 +12,7 @@ def test_create_log(client, api_tokens):
     assert "<Log 1> created." in json_data["message"]
 
 
-# TODO: CREATE EXISTING TITLE
+# CREATE EXISTING TITLE
 def test_create_log_with_existing_title(client, api_tokens):
     response = client.post(
         "/api/logs",
@@ -29,7 +29,7 @@ def test_create_log_broken_json(client, api_tokens):
     response = client.post(
         "/api/logs",
         headers={"Authorization": f"Bearer {api_tokens.token_user_one.value}"},
-        json={"title": "Test Log", "non-existant-in-model": "Test Log"},
+        json={"title": "Test Log broken JSON", "non-existant-in-model": "Test Log"},
     )
     json_data = response.get_json() or {}
     assert response.status_code == 400
@@ -90,18 +90,6 @@ def test_update_foreign_log(client, api_tokens):
     json_data = response.get_json() or {}
     assert response.status_code == 404
     assert "<Log 1> not found in your logs." in json_data["message"]
-
-
-# UPDATE DISALLOW ID CHANGE - OLD VERSION
-# def test_update_log_disallow_id_change(client, api_tokens):
-#     response = client.put(
-#         "/api/logs/1",
-#         headers={"Authorization": f"Bearer {api_tokens.token_user_one.value}"},
-#         json={"title": "Test another title", "id": 1001},
-#     )
-#     json_data = response.get_json() or {}
-#     assert response.status_code == 403
-#     assert "You're not allowed to change the id of <Log 1>." in json_data["message"]
 
 
 # UPDATE DISALLOW ID CHANGE - dump_only id

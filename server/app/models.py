@@ -152,23 +152,10 @@ class User(UserMixin, db.Model):
         return ms.type == MembershipType.WRITE
 
 
-class LogSchema(ma.ModelSchema):
-    class Meta:
-        model = Log
-        dump_only = ("id", "mtime", "ctime")
-
-    # _links = ma.Hyperlinks(
-    #     {
-    #         "self": ma.URLFor("api.get_log", id="<id>"),
-    #         "collection": ma.URLFor("api.get_logs"),
-    #     }
-    # )
-
-
 class EntrySchema(ma.ModelSchema):
     class Meta:
         model = Entry
-        dump_only = ("id", "mtime", "ctime")
+        dump_only = ("id", "mtime", "ctime", "creator")
 
     # log = ma.Nested(LogSchema)
 
@@ -176,6 +163,21 @@ class EntrySchema(ma.ModelSchema):
     #     {
     #         "self": ma.URLFor("api.get_entry", id="<id>"),
     #         "collection": ma.URLFor("api.get_log", id="<log.id>"),
+    #     }
+    # )
+
+
+class LogSchema(ma.ModelSchema):
+    class Meta:
+        model = Log
+        dump_only = ("id", "mtime", "ctime", "entries", "memberships")
+
+    # entries = ma.Nested(EntrySchema, many=True)
+    
+    # _links = ma.Hyperlinks(
+    #     {
+    #         "self": ma.URLFor("api.get_log", id="<id>"),
+    #         "collection": ma.URLFor("api.get_logs"),
     #     }
     # )
 

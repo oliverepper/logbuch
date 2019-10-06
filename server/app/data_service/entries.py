@@ -22,6 +22,7 @@ def create_entry(log_id: int, entry_data: Dict, user: User) -> Entry:
             entry_data, instance=entry, session=db.session
         )  # this might throw
     except Exception as e:
+        # TODO: try to get here and then corrent the error, I bet you'll fail w/o rollback
         raise DataServiceException(str(e))
 
     if not entry.log is log:
@@ -30,7 +31,6 @@ def create_entry(log_id: int, entry_data: Dict, user: User) -> Entry:
         db.session.rollback()
         raise DataServiceException(f"Argument error. Log mismatch.", 403)
 
-    # FIXME: Need to check write permission or ownership!
     if not user.has_write_permission(log):
         db.session.rollback()
         raise DataServiceException(f"You're not allowed to write to {log}", 403)
