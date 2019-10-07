@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-29 10:48+0200\n"
+"POT-Creation-Date: 2019-10-07 20:15+0200\n"
 "PO-Revision-Date: 2019-09-10 15:01+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+
+#: app/models.py:165
+msgid "[Logbuch] membership invitation"
+msgstr "[Logbuch] Mitgliedschafts-Einladung"
 
 #: app/console/forms.py:36 app/console/forms.py:57 app/console/forms.py:64
 #: app/console/forms.py:74
@@ -103,36 +107,40 @@ msgstr "Registrierung abschließen."
 #: app/console/routes.py:100 app/console/routes.py:123
 msgid "You're already logged in. No need to reset your password. Just change it."
 msgstr ""
+"Du bist schon angemeldet und musst Dein Passwort nicht resetten. Ändere "
+"es einfach."
 
 #: app/console/routes.py:110
 msgid "Check your email for instructions to reset your password."
-msgstr ""
+msgstr "Sieh in Deinem E-Mails nach wie Du Dein Passwort ändern kannst."
 
 #: app/console/routes.py:128
 msgid "Your password reset token was invalid."
-msgstr ""
+msgstr "Dein Passwort-Reset-Token ist ungültig."
 
 #: app/console/routes.py:131
 msgid "Looks like you've already reset your password once with that link."
 msgstr ""
+"Sieht so aus als hättest Du Dein Passwort mit diesem Link schonmal "
+"geändert."
 
 #: app/console/routes.py:139
 msgid "Your password has been reset."
-msgstr ""
+msgstr "Dein Passwort wurde geändert."
 
 #: app/console/routes.py:142
 msgid "Reset Password"
-msgstr ""
+msgstr "Passwort zurücksetzen"
 
 #: app/console/routes.py:160
-msgid "You're password has been changed."
-msgstr ""
+msgid "Your password has been changed."
+msgstr "Dein Password wurde geändert."
 
 #: app/console/routes.py:163
 msgid "Change Password"
-msgstr ""
+msgstr "Passwort ändern"
 
-#: app/templates/base.html:11
+#: app/templates/base.html:10
 msgid "Welcome to Logbuch"
 msgstr "Willkommen zu Logbuch"
 
@@ -172,14 +180,28 @@ msgstr "Letzte Einträge"
 msgid "To complete your registration, please visit:"
 msgstr "Um Deine Registrierung abzuschließen klicke bitte auf den folgenden Link:"
 
+#: app/templates/console/email/registration.html:3
+#: app/templates/console/email/reset_password.html:3
+#: app/templates/models/email/membership_invite.html:3
+msgid "click here."
+msgstr "hier klicken."
+
 #: app/templates/console/email/reset_password.html:2
 #: app/templates/console/email/reset_password.txt:1
 msgid "To reset your password click on the following link:"
-msgstr ""
+msgstr "Um Dein Passwort zu resetten klicke auf den Link:"
+
+#: app/templates/models/email/membership_invite.html:2
+#: app/templates/models/email/membership_invite.txt:1
+msgid "To accept your membership invite, please visit:"
+msgstr "Um die Einladung zur Mitgliedschaft anzunehmen gehe auf:"
 
 #~ msgid "Old password is invalid."
 #~ msgstr "Das alte Passwort ist ungültig"
 
 #~ msgid "Old password was invalid."
 #~ msgstr "Das alte Passwort ist ungültig"
+
+#~ msgid "You're password has been changed."
+#~ msgstr "Dein Passwort wurde geändert."
 

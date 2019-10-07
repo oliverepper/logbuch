@@ -4,13 +4,19 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from app import db
 from app.console import bp
-from app.console.forms import (ChangePasswordForm, LoginForm,
-                               RequestPasswordResetForm,
-                               RequestRegistrationForm, SetPasswordForm)
-from app.console.registration import (send_password_reset_email,
-                                      send_registration_email,
-                                      verify_registration_token)
-from app.models import Entry, User
+from app.console.forms import (
+    ChangePasswordForm,
+    LoginForm,
+    RequestPasswordResetForm,
+    RequestRegistrationForm,
+    SetPasswordForm,
+)
+from app.console.registration import (
+    send_password_reset_email,
+    send_registration_email,
+    verify_registration_token,
+)
+from app.models import Entry, Membership, User
 
 
 @bp.before_app_request
@@ -145,10 +151,12 @@ def reset_password(token):
 
 @bp.route("/delete_entry/<id>")
 def delete_entry(id: int):
+    # TODO: use data_service
     db.session.delete(Entry.query.get(id))
     db.session.commit()
     flash(f"Entry {id} deleted.")
     return redirect(url_for("console.index"))
+
 
 @bp.route("/change_password", methods=["GET", "POST"])
 @login_required
@@ -157,7 +165,7 @@ def change_password():
     if form.validate_on_submit():
         current_user.set_password(form.password.data)
         db.session.commit()
-        flash(_("You're password has been changed."))
+        flash(_("Your password has been changed."))
         return redirect(url_for("console.index"))
     return render_template(
         "console/change_password.html", title=_("Change Password"), form=form
@@ -167,5 +175,14 @@ def change_password():
 @bp.route("/accept_membership/<token>", methods=["GET", "POST"])
 @login_required
 def accept_membership(token):
-    # TODO: implement
-    pass
+    membership = Membership.from_invitation_token(token)
+    db.session.add(membership)
+    db.session.commit()
+    flash(
+        _(
+            "You're a member of %(owner)ss log %(title)s, now.",
+            owner=membership.log.owner,
+            title=membership.log.title,
+        )
+    )
+    return redirect(url_for("console.index"))

@@ -95,7 +95,7 @@ def create_app(config=Config):
 
     from app.api import bp as api_bp
 
-    app.register_blueprint(api_bp)
+    app.register_blueprint(api_bp, url_prefix="/api")
 
     from app.message_service import bp as message_service_bp
 

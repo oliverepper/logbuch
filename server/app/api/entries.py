@@ -8,7 +8,7 @@ from app.models import EntrySchema
 
 
 # CREATE ENTRY
-@bp.route("/api/logs/<int:log_id>/entries", methods=["POST"])
+@bp.route("/logs/<int:log_id>/entries", methods=["POST"])
 @token_auth.login_required
 def create_entry(log_id):
     json_data = request.get_json() or {}
@@ -20,7 +20,7 @@ def create_entry(log_id):
     
 
 # READ ALL ENTRIES IN A LOG
-@bp.route("/api/logs/<int:id>/entries", methods=["GET"])
+@bp.route("/logs/<int:id>/entries", methods=["GET"])
 @token_auth.login_required
 def get_entries_in_log(id):
     try:
@@ -31,7 +31,7 @@ def get_entries_in_log(id):
     
 
 # READ ENTRY
-@bp.route("/api/entries/<int:id>", methods=["GET"])
+@bp.route("/entries/<int:id>", methods=["GET"])
 @token_auth.login_required
 def get_entry(id):
     try:
@@ -42,7 +42,7 @@ def get_entry(id):
 
 
 # UPDATE ENTRY
-@bp.route("/api/entries/<int:id>", methods=["PUT"])
+@bp.route("/entries/<int:id>", methods=["PUT"])
 @token_auth.login_required
 def update_entry(id):
     json_data = request.get_json() or {}
@@ -54,7 +54,7 @@ def update_entry(id):
 
 
 # DELETE ENTRY
-@bp.route("/api/entries/<int:id>", methods=["DELETE"])
+@bp.route("/entries/<int:id>", methods=["DELETE"])
 @token_auth.login_required
 def delete_entry(id):
     try:

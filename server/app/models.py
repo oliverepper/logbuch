@@ -7,6 +7,7 @@ from time import time
 
 import jwt
 from flask import current_app, render_template
+from flask_babel import _
 from flask_login import UserMixin
 from marshmallow_enum import EnumField
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -34,6 +35,25 @@ class Membership(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), primary_key=True)
     user = db.relationship("User")
     type = db.Column(db.Enum(MembershipType), default=MembershipType.READ)
+
+    @classmethod
+    def from_invitation_token(cls, token):
+        try:
+            membership_data = jwt.decode(
+                token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
+            )
+        except Exception as e:
+            raise Exception("Your invitation token is invalid")
+
+        try:
+            membership = Membership.query.filter_by(
+                log_id=membership_data["log"], user_id=membership_data["user"]
+            ).one()
+        except Exception as e:
+            membership = Membership()
+        return MembershipSchema().load(
+            membership_data, instance=membership, session=db.session
+        )
 
 
 class User(UserMixin, db.Model):
@@ -137,18 +157,19 @@ class Log(db.Model):
     def _send_membership_invitation(self, membership: Membership):
         membership_data = MembershipSchema().dump(membership)
         token = jwt.encode(
-            membership_data,
-            current_app.config["SECRET_KEY"],
-            algorithm="HS256"
+            membership_data, current_app.config["SECRET_KEY"], algorithm="HS256"
         ).decode("utf-8")
         with current_app.app_context(), current_app.test_request_context():
             send_email(
-                # FIXME: use _() here, which could be hard
-                "[Logbuch] membership invitation",
+                _("[Logbuch] membership invitation"),
                 sender=current_app.config["SENDER_EMAIL"][0],
                 recipients=[membership.user.email],
-                text_body=render_template("models/email/membership_invite.txt", token=token),
-                html_body=token,
+                text_body=render_template(
+                    "models/email/membership_invite.txt", token=token
+                ),
+                html_body=render_template(
+                    "models/email/membership_invite.html", token=token
+                )
             )
 
 

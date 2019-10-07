@@ -8,7 +8,7 @@ from app.models import Log, LogSchema
 
 
 # CREATE LOG
-@bp.route("/api/logs", methods=["POST"])
+@bp.route("/logs", methods=["POST"])
 @token_auth.login_required
 def create_log():
     json_data = request.get_json() or {}
@@ -20,7 +20,7 @@ def create_log():
 
 
 # READ ALL LOGS
-@bp.route("/api/logs", methods=["GET"])
+@bp.route("/logs", methods=["GET"])
 @token_auth.login_required
 def get_logs():
     log_list = logs.read_logs(g.current_user)
@@ -28,7 +28,7 @@ def get_logs():
 
 
 # READ LOG
-@bp.route("/api/logs/<int:id>", methods=["GET"])
+@bp.route("/logs/<int:id>", methods=["GET"])
 @token_auth.login_required
 def get_log(id):
     try:
@@ -39,7 +39,7 @@ def get_log(id):
 
 
 # UPDATE LOG
-@bp.route("/api/logs/<int:id>", methods=["PUT"])
+@bp.route("/logs/<int:id>", methods=["PUT"])
 @token_auth.login_required
 def update_log(id):
     json_data = request.get_json() or {}
@@ -51,7 +51,7 @@ def update_log(id):
 
 
 # DELETE LOG
-@bp.route("/api/logs/<int:id>", methods=["DELETE"])
+@bp.route("/logs/<int:id>", methods=["DELETE"])
 @token_auth.login_required
 def delete_log(id):
     try:

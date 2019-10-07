@@ -12,7 +12,7 @@ from . import logs, entries
 
 
 # GET TOKEN FOR USER
-@bp.route("/api/token", methods=["GET"])
+@bp.route("/token", methods=["GET"])
 @basic_auth.login_required
 def get_token():
     token = g.current_user.api_token

@@ -14,4 +14,4 @@ def test_change_password(client):
         follow_redirects=True,
     )
     assert response.status_code == 200
-    assert b"You&#39;re password has been changed." in response.data
+    assert b"Your password has been changed." in response.data
