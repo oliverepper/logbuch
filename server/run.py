@@ -5,6 +5,11 @@ app = create_app()
 cli.register_app(app)
 
 
+@app.before_request
+def before_request():
+    pass
+
+
 @app.shell_context_processor
 def make_shell_context():
     return {
