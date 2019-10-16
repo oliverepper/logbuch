@@ -40,7 +40,7 @@ export default {
 
       axios
         .put(path, {
-          "title": title
+          title: title
         })
         .then((response) => {
           this.msg = response.data.message;
@@ -52,7 +52,7 @@ export default {
     }
   },
   created() {
-    const token = "nKnAPPsbEj97ami2HNqRbAJLuaniFlzHpZGMcfp7Dx8=";
+    const token = "0T0ZfGWSdGvdIWQD/h9D46+7M3iRxSh08557KqUhnnA=";
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     this.getLogs();
