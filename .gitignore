@@ -1,9 +1,10 @@
+__pycache__
+.coverage
+.DS_Store
+.pytest_cache
 .python-version
 .vscode
-__pycache__
-logs
-instance
-.coverage
 cov.xml
-.pytest_cache
+instance
+logs
 node_modules
