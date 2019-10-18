@@ -1,0 +1,11 @@
+.wf-loading body {
+    font-family: system-ui, sans-serif;
+}
+
+.wf-active body {
+    font-family: "Nunito";
+}
+
+html {
+    font-size: 1em;
+}

@@ -1,0 +1,19 @@
+{
+  "name": "logbuch-webpack",
+  "version": "1.0.0",
+  "description": "Webpack Bundle for Logbuch",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "Oliver Epper <oliver.epper@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.19.0",
+    "vue": "^2.6.10",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  }
+}
