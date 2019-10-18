@@ -39,7 +39,6 @@ export default {
     },
     updateEntry(id, content) {
       const path = `http://localhost:5000/api/entries/${id}`;
-      alert(path);
 
       axios
         .put(path, {
