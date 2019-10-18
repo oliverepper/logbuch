@@ -1,13 +1,13 @@
 <template>
-  <div class="Editable">
+  <!-- <div class="Editable"> -->
     <input type="test"
       v-if="edit"
       :value="valueLocal"
       @blur="valueLocal = $event.target.value; edit = false; $emit('input', valueLocal);"
       @keyup.enter="valueLocal = $event.target.value; edit = false; $emit('input', valueLocal);"
       v-focus />
-    <div v-else="" @click="edit=true">{{ valueLocal}}</div>
-  </div>
+    <span v-else="" @click="edit=true">{{ valueLocal }}</span>
+  <!-- </div> -->
 </template>
 
 <script>

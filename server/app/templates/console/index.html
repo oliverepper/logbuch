@@ -7,11 +7,12 @@
             {% if entry.creator != log.owner -%}
             <small>{{ _('%(creator)s says: ', creator=entry.creator) }}</small>
             {%- endif %}
-            {{ entry.content }}
+            <logbuch-entry token="{{ user.api_token.value }}" id="{{ entry.id }}"></logbuch-entry>
+            <!-- {{ entry.content }}
             <small>
                 {{ moment(entry.ctime).fromNow() }}
                 <a href="{{ url_for('console.delete_entry', id=entry.id) }}">{{ _("Delete Entry") }}</a>
-            </small>
+            </small> -->
         </li>
         {% endfor %}
     </ul>
