@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getEntry() {
-      const path = `http://127.0.0.1:5000/api/entries/${this.id}`;
+      const path = `/api/entries/${this.id}`;
 
       axios
         .get(path)
@@ -38,7 +38,7 @@ export default {
         });
     },
     updateEntry(id, content) {
-      const path = `http://localhost:5000/api/entries/${id}`;
+      const path = `/api/entries/${id}`;
 
       axios
         .put(path, {
