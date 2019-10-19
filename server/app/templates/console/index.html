@@ -8,11 +8,11 @@
             <small>{{ _('%(creator)s says: ', creator=entry.creator) }}</small>
             {%- endif %}
             <logbuch-entry token="{{ user.api_token.value }}" id="{{ entry.id }}"></logbuch-entry>
-            <!-- {{ entry.content }}
+            <!-- {{ entry.content }} -->
             <small>
                 {{ moment(entry.ctime).fromNow() }}
                 <a href="{{ url_for('console.delete_entry', id=entry.id) }}">{{ _("Delete Entry") }}</a>
-            </small> -->
+            </small>
         </li>
         {% endfor %}
     </ul>

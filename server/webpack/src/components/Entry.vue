@@ -27,13 +27,19 @@ export default {
   methods: {
     getEntry() {
       const path = `/api/entries/${this.id}`;
+      // TODO: remove debug
+      console.log(path);
 
       axios
         .get(path)
         .then(response => {
+          // TODO: remove debug
+          console.log(response);
           this.content = response.data.content;
         })
         .catch(error => {
+          // TODO: remove debug
+          console.log(error);
           this.content = error.response.data.message;
         });
     },
@@ -51,6 +57,8 @@ export default {
   },
   created() {
     axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+    // TODO: remove debug
+    console.log(this.token);
 
     this.getEntry();
   }
