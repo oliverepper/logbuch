@@ -1,7 +1,9 @@
-const path = require('path');
-const { VueLoaderPlugin } = require('vue-loader');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { VueLoaderPlugin } = require('vue-loader');
+
 
 module.exports = {
     mode: 'production',
@@ -14,7 +16,7 @@ module.exports = {
         minimizer: [
             new TerserPlugin(),
             new HtmlWebpackPlugin({
-                inject: false,
+                // inject: false,
                 filename: "../../templates/base_generated.html",
                 template: "./src/base_template.html",
                 minify: {
@@ -29,6 +31,7 @@ module.exports = {
         }
     },
     plugins: [
+        new webpack.ProgressPlugin(),
         new VueLoaderPlugin()
     ],
     module: {
