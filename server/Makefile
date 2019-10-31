@@ -1,7 +1,10 @@
 LOGBUCH_VERSION='0.1'
 
-run-logbuch: instance/app.db
+run-logbuch: instance/app.db app/static/generated app/templates/base_generated.html
 	flask run
+
+app/static/generated app/templates/base_generated.html:
+	$(MAKE) -C webpack
 
 instance/app.db: instance/secret_key
 	flask db upgrade
