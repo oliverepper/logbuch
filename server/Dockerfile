@@ -1,7 +1,7 @@
 FROM python:latest
 LABEL maintainer="Oliver Epper <oliver.epper@gmail.com>"
 
-RUN useradd -ms /home/logbuch logbuch
+RUN useradd -ms /bin/bash logbuch
 WORKDIR /home/logbuch
 
 COPY requirements.txt requirements.txt
