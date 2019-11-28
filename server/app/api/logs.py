@@ -24,7 +24,7 @@ def create_log():
 @token_auth.login_required
 def get_logs():
     log_list = logs.read_logs(g.current_user)
-    return ApiResult({"logs": LogSchema(many=True).dump(log_list)})
+    return ApiResult(LogSchema(many=True).dump(log_list))
 
 
 # READ LOG

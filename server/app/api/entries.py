@@ -27,7 +27,7 @@ def get_entries_in_log(id):
         entry_list = entries.read_entries(id, g.current_user)
     except DataServiceException as dse:
         raise ApiException(dse.message, dse.status)
-    return ApiResult({"entries": EntrySchema(many=True).dump(entry_list)})
+    return ApiResult(EntrySchema(many=True).dump(entry_list))
     
 
 # READ ENTRY
